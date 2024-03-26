@@ -72,12 +72,11 @@ if (modal) {
     const button = event.relatedTarget
     // Extract info from data-bs-* attributes
     const loc = button.getAttribute('data-jl-loc');
-    console.log(loc);
     const src = button.getAttribute('data-jl-src');
     // If necessary, you could initiate an Ajax request here
     // and then do the updating in a callback.
 
-    // Update the modal's content.
+    // Update the modal's content
     const modalTitle = modal.querySelector('.modal-title');
     const modalNewTab = modal.querySelector('#newtab');
     const modalIFrame = modal.querySelector('.modal-body iframe');
@@ -85,5 +84,13 @@ if (modal) {
     modalTitle.textContent = loc;
     modalNewTab.setAttribute('href',src);
     modalIFrame.setAttribute('src',src);
+  });
+  modal.addEventListener('hide.bs.modal', event => {
+    modal.querySelector('#spinner').classList.remove('invisible');
   })
 };
+
+document.querySelector("iframe").addEventListener( "load", function(e) {
+    document.getElementById('spinner').classList.add('invisible');
+
+} );
