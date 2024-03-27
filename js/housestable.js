@@ -2,6 +2,7 @@ let table = document.getElementById("houses");
 let fragment = document.createDocumentFragment();
 let thead = document.createElement('thead');
 let tbody = document.createElement('tbody');
+let price, plex, link;
 
 const currency = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -24,33 +25,45 @@ const currency = new Intl.NumberFormat('en-US', {
             let cell;
             if (index === 0) {
                 cell = document.createElement('th');
+                switch (row[i]) {
+                    case 'Maison':
+                        price = i;
+                        break;
+                    case 'Plex':
+                        plex = i;
+                        break;
+                    case 'Adresse web':
+                        link = i;
+                        break;
+                }
+                cell.innerText = row[i];
             } else {
                 cell = document.createElement('td');
-            }
-            if (row[i] == undefined) {
-                cell.innerText = "";
-            } else if (i === 0 && index !== 0) {
-                cell.innerText = currency.format(row[i]);
-            } else if (i === 3 && index !== 0) {
-                let arr = row[i].split('\n');
-                arr.forEach(el => {
-                    let span = document.createElement('span');
-                    span.classList.add('badge','text-bg-secondary');
-                    span.innerText = el;
-                    cell.appendChild(span);
-                })
-            } else if (i === row.length-1 && index !== 0) {
-                let btn = document.createElement('a');
-                btn.setAttribute('type',"button");
-                btn.classList.add('link-primary');
-                btn.setAttribute('data-bs-toggle',"modal");
-                btn.setAttribute('data-bs-target',"#frame");
-                btn.setAttribute('data-jl-src',row[i]);
-                btn.setAttribute('data-jl-loc',row[1])
-                btn.innerText = row[i];
-                cell.appendChild(btn);
-            } else {
-                cell.innerText = row[i];
+                if (row[i] == undefined) {
+                    cell.innerText = "";
+                } else if (i === price) {
+                    cell.innerText = currency.format(row[i]);
+                } else if (i === plex) {
+                    let arr = row[i].split('\n');
+                    arr.forEach(el => {
+                        let span = document.createElement('span');
+                        span.classList.add('badge','text-bg-secondary');
+                        span.innerText = el;
+                        cell.appendChild(span);
+                    })
+                } else if (i === link) {
+                    let btn = document.createElement('a');
+                    btn.setAttribute('type',"button");
+                    btn.classList.add('link-primary');
+                    btn.setAttribute('data-bs-toggle',"modal");
+                    btn.setAttribute('data-bs-target',"#frame");
+                    btn.setAttribute('data-jl-src',row[i]);
+                    btn.setAttribute('data-jl-loc',row[1])
+                    btn.innerText = row[i];
+                    cell.appendChild(btn);
+                } else {
+                    cell.innerText = row[i];
+                }
             }
             tr.appendChild(cell);
         }
@@ -90,7 +103,8 @@ if (modal) {
   })
 };
 
-document.querySelector("iframe").addEventListener( "load", function(e) {
+const iframe = document.querySelector("iframe");
+iframe.addEventListener( "load", event => {
     document.getElementById('spinner').classList.add('invisible');
 
-} );
+});
