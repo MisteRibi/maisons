@@ -1,8 +1,9 @@
 let table = document.getElementById("houses");
 let fragment = document.createDocumentFragment();
 let thead = document.createElement('thead');
+thead.classList.add('sticky-top',"text-nowrap");
 let tbody = document.createElement('tbody');
-let price, plex, link;
+let price, loc, plex, link;
 
 const currency = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -28,6 +29,9 @@ const currency = new Intl.NumberFormat('en-US', {
                 switch (row[i]) {
                     case 'Maison':
                         price = i;
+                        break;
+                    case 'Localisation':
+                        loc = i;
                         break;
                     case 'Plex':
                         plex = i;
@@ -63,6 +67,9 @@ const currency = new Intl.NumberFormat('en-US', {
                     cell.appendChild(btn);
                 } else {
                     cell.innerText = row[i];
+                    if (i === loc) {
+                        cell.classList.add("text-nowrap");
+                    }
                 }
             }
             tr.appendChild(cell);
